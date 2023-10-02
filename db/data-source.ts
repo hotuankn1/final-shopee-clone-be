@@ -8,6 +8,7 @@ export const dataSourceOptions: DataSourceOptions = {
     username: 'postgres',
     password: 'hotuan123',
     database:'final-shopee-clone',
+    logging: true,
     entities: ['./dist/src/**/*.entity.{ts,js}'],
     migrations:['./dist/db/migrations/*.{ts,js}']
 }
