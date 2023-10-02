@@ -11,7 +11,7 @@ export class AuthService {
     constructor(private usersService: UsersService) { }
 
     async signup(email: string, password: string) {
-        const users = await this.usersService.find(email)
+        const users = await this.usersService.getByEmail(email)
         if (users.length) {
             throw new BadRequestException('email in use')
         }
@@ -22,14 +22,14 @@ export class AuthService {
 
         const result = salt + '.' + hash.toString('hex')
 
-        const user = await this.usersService.create(email, result)
+        const user = await this.usersService.createUser(email, result)
 
         return user
     }
 
 
     async signin(email: string, password: string) {
-        const [user] = await this.usersService.find(email)
+        const [user] = await this.usersService.getByEmail(email)
 
         if (!user) {
             throw new BadRequestException('user not found')

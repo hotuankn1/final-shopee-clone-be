@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Session } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Query, Session } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -12,10 +12,7 @@ export class UsersController {
 
     @Post('/signup')
     async signup(@Body() body: CreateUserDto, @Session() session: any) {
-        const user = await this.usersService.create(body.email, body.password);
-        console.log(session);
-        console.log(user);
-        session.userId = user.id;
+        const user = await this.authService.signup(body.email, body.password);
         return user
     }
 
@@ -23,17 +20,22 @@ export class UsersController {
     async signin(@Body() body: CreateUserDto, @Session() session: any) {
         const user = await this.authService.signin(body.email, body.password);
         session.userId = user.id;
+        console.log(session);
         return user;
     }
+
 
     @Post('/signout')
     signOut(@Session() session: any) {
         session.userId = null;
     }
 
+
     @Get('/:id')
     async findUser(@Param('id') id: string) {
-        const user = await this.usersService.findOne(parseInt(id));
+        console.log(id);
+        const user = await this.usersService.getById(parseInt(id));
+        
         if (!user) {
             throw new NotFoundException('user not found');
         }
