@@ -11,7 +11,7 @@ export class Product implements IProduct {
     @Column()
     name: string;
 
-    @Column()
+    @Column({default: 1})
     series: string;
 
     @Column()

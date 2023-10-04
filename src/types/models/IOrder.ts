@@ -1,6 +1,7 @@
 export interface IOrderProduct {
     productId: number;
-    amount: number
+    amount: number;
+    price: number
 }
 
 
